@@ -20,6 +20,7 @@ resource "aws_security_group" "devops_assessment_security_group" {
 
 resource "aws_ecs_task_definition" "devops_assessment_task" {
   family                   = "devops-assessment-task"
+  network_mode             = "awsvpc"
   container_definitions    = jsonencode([{
     name  = "devops-assessment"
     image = "devops_assessment:latest"
