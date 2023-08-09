@@ -1,4 +1,4 @@
-name: Pyhton Build, Docker Build, Terraform Deploy
+name: Python Build, Docker Build, Terraform Deploy
 on: 
   push:
     branches: [ main ]
