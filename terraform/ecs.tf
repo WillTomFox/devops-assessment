@@ -24,7 +24,7 @@ resource "aws_ecs_service" "devops_assessment_ecs_service" {
   name            = "devops-assessment-ecs-service"
   cluster         = aws_ecs_cluster.devops_assessment_ecs_cluster.arn
   task_definition = aws_ecs_task_definition.devops_assessment_task.arn
-  desired_count   = 1
+  desired_count   = 3
   launch_type     = "FARGATE"
 
   network_configuration {
