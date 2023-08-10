@@ -12,3 +12,8 @@ variable "secret_key" {
 variable "aws_account_id" {
   type = string
 }
+
+# AWS region
+variable "region" {
+  type = string
+}

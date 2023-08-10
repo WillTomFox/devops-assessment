@@ -10,7 +10,7 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
   execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
   container_definitions    = jsonencode([{
     name  = "devops-assessment"
-    image = "${var.aws_account_id}.dkr.ecr.region.amazonaws.com/devops_assessment:latest"
+    image = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/devops_assessment:latest"
     portMappings = [{
       containerPort = 8080
       hostPort      = 8080
