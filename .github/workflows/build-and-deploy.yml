@@ -7,7 +7,7 @@ on:
     types: [opened, synchronize, reopened]
 jobs:
   python-build:
-    name: Python Build
+    name: Python Build and Test
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -33,7 +33,7 @@ jobs:
         run: |
           pytest
   docker-build:
-    name: Docker Build
+    name: Docker Build and Push
     needs: python-build
     runs-on: ubuntu-latest
     steps:
@@ -58,7 +58,7 @@ jobs:
         docker tag devops_assessment:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
   terraform-plan:
-    name: Terraform Plan
+    name: Terraform Plan and Deploy
     needs: docker-build
     runs-on: ubuntu-latest
     env:
@@ -85,9 +85,6 @@ jobs:
       run: terraform plan -out=tfplan
       working-directory: ./terraform
     - name: Terraform Apply
-      env:
-        name: staging
       if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
       run: terraform apply tfplan
       working-directory: ./terraform
-      # Note: Make sure to set the AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY secrets in your GitHub repository.
