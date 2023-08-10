@@ -5,6 +5,9 @@ resource "aws_ecs_cluster" "devops_assessment_ecs_cluster" {
 resource "aws_ecs_task_definition" "devops_assessment_task" {
   family                   = "devops-assessment-task"
   network_mode             = "awsvpc"
+  cpu                      = "256"
+  memory                   = "512"
+  execution_role_arn       = "arn:aws:iam::${var.aws_account_id}:role/ecsTaskExecutionRole"
   container_definitions    = jsonencode([{
     name  = "devops-assessment"
     image = "${var.aws_account_id}.dkr.ecr.region.amazonaws.com/devops_assessment:latest"
@@ -15,8 +18,6 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
     }]
   }])
   requires_compatibilities = ["FARGATE"]
-  cpu                      = "256"
-  memory                   = "512"
 }
 
 resource "aws_ecs_service" "devops_assessment_ecs_service" {
