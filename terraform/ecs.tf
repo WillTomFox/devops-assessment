@@ -16,6 +16,15 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
       hostPort      = 8080
       protocol      = "tcp"
     }]
+    log_configuration = {
+      log_driver = "awslogs"
+      options = {
+        awslogs-group         = "ecs-container"
+        awslogs-region        = "eu-west-2"
+        create-group          = true
+        awslogs-stream-prefix = "ecs"
+      }
+    }
   }])
   requires_compatibilities = ["FARGATE"]
 }
