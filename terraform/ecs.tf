@@ -1,7 +1,9 @@
+# Create AWS ECS cluster
 resource "aws_ecs_cluster" "devops_assessment_ecs_cluster" {
   name     = "devops-assessment-ecs-cluster"
 }
 
+# Create AWS ACS task definition
 resource "aws_ecs_task_definition" "devops_assessment_task" {
   family                   = "devops-assessment-task"
   network_mode             = "awsvpc"
@@ -29,6 +31,7 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
   requires_compatibilities = ["FARGATE"]
 }
 
+# AWS ECS service
 resource "aws_ecs_service" "devops_assessment_ecs_service" {
   name            = "devops-assessment-ecs-service"
   cluster         = aws_ecs_cluster.devops_assessment_ecs_cluster.arn

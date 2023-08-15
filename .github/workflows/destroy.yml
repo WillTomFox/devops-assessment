@@ -1,3 +1,5 @@
+# Workflow for destroying Terraform - only runs if triggered manually
+
 name: Terraform Destroy
 on:
   workflow_dispatch:

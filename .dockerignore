@@ -1,0 +1,5 @@
+.github/
+.pytest_cache/
+terraform/
+.gitignore
+README.md
