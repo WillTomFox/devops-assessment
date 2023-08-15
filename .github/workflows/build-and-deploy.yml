@@ -6,7 +6,7 @@ on:
   push:
     branches: [ '*' ]
   pull_request:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
 jobs:
   python-build:
     name: Python Build and Test
