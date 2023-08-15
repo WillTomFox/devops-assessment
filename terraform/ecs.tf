@@ -14,8 +14,8 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
     name  = "devops-assessment"
     image = "${var.aws_account_id}.dkr.ecr.${var.region}.amazonaws.com/devops_assessment:latest"
     portMappings = [{
-      containerPort = 8080
-      hostPort      = 8080
+      containerPort = 80
+      hostPort      = 80
       protocol      = "tcp"
     }]
     log_configuration = {
@@ -33,11 +33,12 @@ resource "aws_ecs_task_definition" "devops_assessment_task" {
 
 # AWS ECS service
 resource "aws_ecs_service" "devops_assessment_ecs_service" {
-  name            = "devops-assessment-ecs-service"
+  name            = "devops-assessment-ecs-service-${count.index}"
   cluster         = aws_ecs_cluster.devops_assessment_ecs_cluster.arn
   task_definition = aws_ecs_task_definition.devops_assessment_task.arn
   desired_count   = 3
   launch_type     = "FARGATE"
+  count           = "${length(data.aws_availability_zones.available.names)}"
 
   network_configuration {
     subnets          = [aws_subnet.devops_assessment_subnet[count.index].id]
@@ -48,6 +49,6 @@ resource "aws_ecs_service" "devops_assessment_ecs_service" {
   load_balancer {
     target_group_arn = aws_lb_target_group.devops_assessment_target_group.arn
     container_name   = "devops-assessment"
-    container_port   = 8080
+    container_port   = 80
   }
 }

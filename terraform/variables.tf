@@ -25,5 +25,5 @@ variable "vpc_id" {
 
 # CIDR block
 variable "cidr_block" {
-  type = string
+  type = list(string)
 }

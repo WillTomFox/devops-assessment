@@ -1,9 +1,8 @@
 resource "aws_alb" "devops_assessment_alb" {
-  count              = "${length(data.aws_availability_zones.available.names)}"
-  name               = "devops-assessment-alb-${count.index}"
+  name               = "devops-assessment-alb"
   internal           = false
   load_balancer_type = "application"
-  subnets            = [aws_subnet.devops_assessment_subnet[count.index].id]
+  subnets            = [for subnet in aws_subnet.devops_assessment_subnet : subnet.id]
   security_groups    = [aws_security_group.devops_assessment_security_group.id]
 
 #   tags = {
@@ -14,7 +13,7 @@ resource "aws_alb" "devops_assessment_alb" {
 
 resource "aws_lb_target_group" "devops_assessment_target_group" {
   name        = "devops-assessment-tg"
-  port        = 8080
+  port        = 80
   protocol    = "HTTP"
   target_type = "ip"
   vpc_id      = var.vpc_id
@@ -35,8 +34,7 @@ resource "aws_lb_target_group" "devops_assessment_target_group" {
 }
 
 resource "aws_lb_listener" "devops_assessment_listener" {
-  count             = "${length(data.aws_availability_zones.available.names)}"
-  load_balancer_arn = [aws_alb.devops_assessment_alb[count.index].id]
+  load_balancer_arn = aws_alb.devops_assessment_alb.arn
   port              = "80"
   protocol          = "HTTP"
 
