@@ -44,4 +44,10 @@ resource "aws_ecs_service" "devops_assessment_ecs_service" {
     security_groups  = [aws_security_group.devops_assessment_security_group.id]
     assign_public_ip = true
   }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.devops_assessment_target_group.arn
+    container_name   = "devops-assessment-container"
+    container_port   = 8080
+  }
 }

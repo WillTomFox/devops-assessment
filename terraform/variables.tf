@@ -17,3 +17,13 @@ variable "aws_account_id" {
 variable "region" {
   type = string
 }
+
+# VPC ID
+variable "vpc_id" {
+  type = string
+}
+
+# CIDR block
+variable "cidr_block" {
+  type = string
+}
