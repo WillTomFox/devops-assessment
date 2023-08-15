@@ -1,10 +1,12 @@
+# Workflow for Python build and test, docker build and push and Terraform deployment
+
 name: Python Build, Docker Build, Terraform Deploy
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ '*' ]
   pull_request:
-    types: [opened, synchronize, reopened]
+    types: [opened, synchronize, reopened, closed]
 jobs:
   python-build:
     name: Python Build and Test
@@ -82,6 +84,7 @@ jobs:
       run: terraform plan -out=tfplan
       working-directory: ./terraform
     - name: Terraform Apply
-      if: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
+      # Only apply terraform if MR is merged to main
+      if: ${{ (github.event.pull_request.merged == true && github.ref == 'refs/heads/main') || github.event_name == 'workflow_dispatch' }}
       run: terraform apply tfplan
       working-directory: ./terraform
